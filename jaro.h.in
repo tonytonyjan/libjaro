@@ -1,0 +1,15 @@
+#ifndef LIBJARO_JARO_H
+#define LIBJARO_JARO_H
+
+#define LIBJARO_VERSION_MAJOR @libjaro_VERSION_MAJOR@
+#define LIBJARO_VERSION_MINOR @libjaro_VERSION_MINOR@
+
+typedef struct LibJaroOption{
+  double weight, threshold;
+} LibJaroOption;
+
+double jaro_winkler_distance(char *str1, char *str2);
+double jaro_winkler_distance2(char *str1, char *str2, LibJaroOption *opt);
+double jaro_winkler_distance3(char *str1, int len1, char *str2, int len2, LibJaroOption *opt);
+
+#endif
