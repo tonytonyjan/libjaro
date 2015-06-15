@@ -16,5 +16,9 @@ int main(void){
   assert(within(0.8133, jaro_winkler_distance("dixon", "dicksonx")));
   assert(within(0.0, jaro_winkler_distance("fvie", "ten")));
   assert(within(0.8180, jaro_winkler_distance("Santa Monica", "San Francisco")));
+  assert(within(0.9818, jaro_winkler_distance("變形金剛4:絕跡重生", "變形金剛4: 絕跡重生")));
+  assert(within(0.8222, jaro_winkler_distance("連勝文", "連勝丼")));
+  assert(within(0.8222, jaro_winkler_distance("馬英九", "馬英丸")));
+  assert(within(0.6666, jaro_winkler_distance("良い", "いい")));
   return 0;
 }
