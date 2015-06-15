@@ -54,7 +54,10 @@ double jaro_winkler_distance3(char* short_str, int short_str_len, char* long_str
       }
     }
   }
-  if(!match_count) return 0.0;
+  if(!match_count){
+    free(short_codes); free(long_codes);
+    return 0.0;
+  }
 
   // count number of transpositions
   int transposition_count = 0, j = 0, k = 0;
@@ -81,11 +84,15 @@ double jaro_winkler_distance3(char* short_str, int short_str_len, char* long_str
     static LibJaroOption default_opt = {.weight = DEFAULT_WEIGHT, .threshold = DEFAULT_THRESHOLD};
     opt = &default_opt;
   }
-  if(jaro_distance < opt->threshold) return jaro_distance;
+  if(jaro_distance < opt->threshold){
+    free(short_codes); free(long_codes);
+    return jaro_distance;
+  }
   else{
     int prefix = 0;
     int max_4 = short_codes_len > 4 ? 4 : short_codes_len;
     for(prefix = 0; prefix < max_4 && short_codes[prefix] == long_codes[prefix]; prefix++);
+    free(short_codes); free(long_codes);
     return jaro_distance + prefix*opt->weight*(1-jaro_distance);
   }
 }
