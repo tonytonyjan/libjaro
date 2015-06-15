@@ -1,14 +1,15 @@
 #include "jaro.h"
 
 #include <string.h>
-#include <stdio.h>
+#include <stdlib.h>
+#include <ctype.h>
 
 #define SWAP(x, y) do{ __typeof__(x) SWAP = x; x = y; y = SWAP; }while(0)
 #define MAX_WORD_LENGTH 64
 #define DEFAULT_WEIGHT 0.1
 #define DEFAULT_THRESHOLD 0.7
 
-extern void string_to_codes(char *str, int length, unsigned long long **ret_codes, int *ret_length);
+void string_to_codes(char *str, int length, unsigned long long **ret_codes, int *ret_length);
 
 double jaro_winkler_distance(char *str1, char *str2){
   return jaro_winkler_distance2(str1, str2, NULL);
@@ -31,6 +32,11 @@ double jaro_winkler_distance3(char* short_str, int short_str_len, char* long_str
   int short_codes_len, long_codes_len;
   string_to_codes(short_str, short_str_len, &short_codes, &short_codes_len);
   string_to_codes(long_str, long_str_len, &long_codes, &long_codes_len);
+
+  if(opt && opt->ignore_case){
+    for(int i = 0; i < short_codes_len; i++) short_codes[i] = tolower(short_codes[i]);
+    for(int i = 0; i < long_codes_len; i++) long_codes[i] = tolower(long_codes[i]);
+  }
 
   int window_size = long_codes_len/2 - 1;
   if(window_size < 0) window_size = 0;
@@ -94,5 +100,27 @@ double jaro_winkler_distance3(char* short_str, int short_str_len, char* long_str
     for(prefix = 0; prefix < max_4 && short_codes[prefix] == long_codes[prefix]; prefix++);
     free(short_codes); free(long_codes);
     return jaro_distance + prefix*opt->weight*(1-jaro_distance);
+  }
+}
+
+void string_to_codes(char *str, int length, unsigned long long **ret_codes, int *ret_length){
+  unsigned int code;
+  char byte_length;
+
+  *ret_codes = malloc(length * sizeof(long long));
+  *ret_length = 0;
+
+  for(int i = 0; i < length;){
+    unsigned char first_char = (unsigned char)str[i];
+    if(first_char >= 252) byte_length = 6;      // 1111110x
+    else if(first_char >= 248) byte_length = 5; // 111110xx
+    else if(first_char >= 240) byte_length = 4; // 11110xxx
+    else if(first_char >= 224) byte_length = 3; // 1110xxxx
+    else if(first_char >= 192) byte_length = 2; // 110xxxxx
+    else byte_length = 1;
+    (*ret_codes)[*ret_length] = 0;
+    memcpy(&(*ret_codes)[*ret_length], &str[i], byte_length);
+    *ret_length += 1;
+    i += byte_length;
   }
 }

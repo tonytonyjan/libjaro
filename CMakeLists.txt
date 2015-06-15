@@ -7,7 +7,7 @@ configure_file (
 )
 
 include_directories("${PROJECT_BINARY_DIR}")
-add_library(jaro SHARED jaro.c unicode.c)
+add_library(jaro SHARED jaro.c)
 
 install(TARGETS jaro LIBRARY DESTINATION lib)
 install(FILES "${PROJECT_BINARY_DIR}/jaro.h" DESTINATION include)

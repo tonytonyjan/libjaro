@@ -6,6 +6,7 @@
 
 typedef struct LibJaroOption{
   double weight, threshold;
+  char ignore_case;
 } LibJaroOption;
 
 double jaro_winkler_distance(char *str1, char *str2);
