@@ -1,9 +1,6 @@
 #ifndef LIBJARO_JARO_H
 #define LIBJARO_JARO_H
 
-#define LIBJARO_VERSION_MAJOR @libjaro_VERSION_MAJOR@
-#define LIBJARO_VERSION_MINOR @libjaro_VERSION_MINOR@
-
 typedef struct LibJaroOption{
   double weight, threshold;
   char ignore_case;

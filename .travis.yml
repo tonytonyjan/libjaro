@@ -1,5 +1,6 @@
 language: c
-script: make test
+before_install: autoreconf -i
+script: ./configure && make check
 compiler:
   - clang
   - gcc

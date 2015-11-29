@@ -3,9 +3,9 @@
 # Install
 
 ```
-mkdir build
-cd build
-cmake ..
+autoreconf -i
+./configure
+make
 make install
 ```
 
