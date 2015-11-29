@@ -5,7 +5,6 @@
 #include <ctype.h>
 
 #define SWAP(x, y) do{ __typeof__(x) SWAP = x; x = y; y = SWAP; }while(0)
-#define MAX_WORD_LENGTH 64
 #define DEFAULT_WEIGHT 0.1
 #define DEFAULT_THRESHOLD 0.7
 
@@ -41,10 +40,10 @@ double jaro_winkler_distance3(char* short_str, int short_str_len, char* long_str
   int window_size = long_codes_len/2 - 1;
   if(window_size < 0) window_size = 0;
 
-  char short_codes_flag[MAX_WORD_LENGTH];
-  char long_codes_flag[MAX_WORD_LENGTH];
-  memset(short_codes_flag, 0, MAX_WORD_LENGTH);
-  memset(long_codes_flag, 0, MAX_WORD_LENGTH);
+  char short_codes_flag[short_str_len];
+  char long_codes_flag[long_str_len];
+  memset(short_codes_flag, 0, short_str_len);
+  memset(long_codes_flag, 0, long_str_len);
 
   // count number of matching characters
   int match_count = 0;
