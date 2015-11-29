@@ -1,6 +1,6 @@
 language: c
-before_install: autoreconf -i
-script: ./configure && make check
+install: sudo apt-get -y install check
+script: autoreconf -fvi && ./configure && make check
 compiler:
   - clang
   - gcc
